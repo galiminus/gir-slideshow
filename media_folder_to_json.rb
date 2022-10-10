@@ -17,7 +17,7 @@ FileUtils.mkdir_p OUTPUT_DIR
 
 video_duration_in_frames = 0
 
-characters = Dir["./slideshow/**/*"].reduce({}) do |media, path|
+characters = Dir["#{ARGV[0]}/**/*"].reduce({}) do |media, path|
   if [".png"].include?(File.extname(path))
     character, artist_configuration = path.split(File::SEPARATOR)[-3..-2]
 
@@ -36,7 +36,7 @@ end.map do |name, artists|
     artist_duration_in_frame = 0
 
     artworks_configuration = artworks.map do |artwork|
-      path = "#{OUTPUT_SUBDIR}/#{SecureRandom.uuid}.#{File.extname(artwork)}"
+      path = "#{OUTPUT_SUBDIR}/#{SecureRandom.uuid}#{File.extname(artwork)}"
       FileUtils.cp artwork, "#{PUBLIC_DIR}/#{path}"
 
       artwork_configuration = {

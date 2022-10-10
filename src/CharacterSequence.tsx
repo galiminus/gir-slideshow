@@ -1,5 +1,5 @@
 import {
-	AbsoluteFill, Img, Sequence, staticFile,
+	AbsoluteFill, Sequence
 } from 'remotion';
 import ArtistSequence from './ArtistSequence';
 import { ArtistType } from './Video';
