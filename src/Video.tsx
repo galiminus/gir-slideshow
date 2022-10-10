@@ -30,7 +30,7 @@ export type SlideshowType = {
 	characters: CharacterType[];
 }
 
-import slideshow from './characters.json';
+import slideshow from './slideshow.json';
 
 export const RemotionVideo: React.FC = () => {
 	return (
