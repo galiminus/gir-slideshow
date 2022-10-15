@@ -1,5 +1,5 @@
 import {
-	AbsoluteFill,
+	AbsoluteFill, Series,
 } from 'remotion';
 
 import { SlideshowType } from './Video';
@@ -17,7 +17,7 @@ export const Slideshow: React.FC<{
   slideshow
 }) => {
 	return (
-		<AbsoluteFill style={{ backgroundColor: 'white' }}>
+    <>
       <IntroSequence
         titleText={titleText}
         titleColor={titleColor}
@@ -27,6 +27,6 @@ export const Slideshow: React.FC<{
         characters={slideshow.characters}
         from={slideshow.introDurationInFrames}
       />
-		</AbsoluteFill>
+    </>
 	);
 };

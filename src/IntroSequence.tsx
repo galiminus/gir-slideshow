@@ -15,7 +15,6 @@ const IntroSequence: React.FC<{
 }> = ({ durationInFrames, titleText, titleColor }) => {
 	const frame = useCurrentFrame();
 
-	// Fade out the animation at the end
 	const opacity = interpolate(
 		frame,
 		[durationInFrames - 25, durationInFrames - 15],
@@ -27,7 +26,7 @@ const IntroSequence: React.FC<{
 	);
 
 	return (
-		<AbsoluteFill style={{ opacity }}>
+		<AbsoluteFill style={{ opacity, backgroundColor: 'white' }}>
 			<Sequence from={0} durationInFrames={durationInFrames}>
 				<Sequence from={0}>
 					<Logo />
