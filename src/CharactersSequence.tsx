@@ -14,12 +14,9 @@ const CharactersSequence: React.FC<{
       from={from}
     >
       {
-        characters.map(({ name, artists, from, durationInFrames }) => (
+        characters.map((character) => (
           <CharacterSequence
-            name={name}
-            artists={artists}
-            from={from}
-            durationInFrames={durationInFrames}
+            {...character}
           />
         ))
       }

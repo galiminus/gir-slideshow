@@ -7,10 +7,11 @@ import { ArtistType } from './Video';
 
 const CharacterSequence: React.FC<{
 	name: string;
+	species: string;
   artists: ArtistType[];
   from: number;
   durationInFrames: number;
-}> = ({ name: characterName, artists, from, durationInFrames }) => {
+}> = ({ name: characterName, species, artists, from, durationInFrames }) => {
   const frame = useCurrentFrame();
 
   if (artists.length === 0) {
@@ -49,16 +50,25 @@ const CharacterSequence: React.FC<{
               marginRight: "auto",
               fontFamily: FONT_FAMILY,
               textTransform: 'capitalize',
+              textAlign: 'center'
             }}
           >
-            {characterName}
+            {characterName}<br />
+            <span
+              style={{
+                fontSize: '0.5em'
+              }}
+            >
+              ({species})
+            </span>
           </p>
         </AbsoluteFill>
       </Sequence>
       {
-        artists.map(({ name, artworks, from, durationInFrames }) => (
+        artists.map(({ name, network, artworks, from, durationInFrames }) => (
           <ArtistSequence
             name={name}
+            network={network}
             characterName={characterName}
             from={from}
             durationInFrames={durationInFrames}

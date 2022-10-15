@@ -5,7 +5,7 @@ import {
 import { FONT_FAMILY } from './Intro/constants';
 import { ArtworkType } from './Video';
 
-const INFO_HEIGHT = 130;
+const INFO_HEIGHT = 96;
 
 const ArtistSequence: React.FC<{
 	name: string;
@@ -72,16 +72,17 @@ const ArtistSequence: React.FC<{
         style={{
           position: "absolute",
           height: INFO_HEIGHT,
-          backgroundColor: 'rgba(219, 39, 119)',
+          backgroundColor: 'rgba(0, 0, 0, 0.9)',
           bottom: infoBottom,
           right: 0,
           color: 'white',
-          textAlign: 'right',
+          textAlign: 'left',
           padding: "20px 80px",
           fontSize: '3em',
           borderTopLeftRadius: 0,
           fontFamily: FONT_FAMILY,
-          textTransform: 'capitalize'
+          textTransform: 'capitalize',
+          width: '100%'
         }}
       >
         {characterName} par {artistName}<br />

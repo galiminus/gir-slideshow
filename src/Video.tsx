@@ -18,6 +18,7 @@ export type ArtistType = {
 
 export type CharacterType = {
 	name: string;
+	species: string;
 	artists: ArtistType[];
 	durationInFrames: number;
 	from: number;

@@ -30,6 +30,8 @@ characters = Dir["#{ARGV[0]}/**/*"].reduce({}) do |media, path|
 end.map do |name, artists|
   character_duration_in_frames = CHARACTER_NAME_DURATION
 
+  _, character_name, character_species = name.match(/([^(]+) *\(?([^\)]+)?\)?/).to_a
+
   artists_configuration = artists.map do |artist_configuration, artworks|
     _, artist_name, artist_network = artist_configuration.match(/([^ ]+) *\(?([^\)]+)?\)?/).to_a
 
@@ -64,7 +66,8 @@ end.map do |name, artists|
   end
 
   character_configuration = {
-    name: name,
+    name: character_name,
+    species: character_species,
     from: video_duration_in_frames,
     durationInFrames: character_duration_in_frames,
     artists: artists_configuration
