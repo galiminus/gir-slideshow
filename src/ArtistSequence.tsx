@@ -5,7 +5,7 @@ import {
 import { FONT_FAMILY } from './Intro/constants';
 import { ArtworkType } from './Video';
 
-const INFO_HEIGHT = 130;
+const INFO_HEIGHT = 116;
 
 const ArtistSequence: React.FC<{
 	name: string;
@@ -75,7 +75,8 @@ const ArtistSequence: React.FC<{
                     width: '100%',
                     display: 'flex',
                     flexDirection: 'row',
-                    justifyContent: 'space-between'
+                    justifyContent: 'space-between',
+                    lineHeight: '1em'
                   }}
                 >
                   <div
