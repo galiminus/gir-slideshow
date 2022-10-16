@@ -1,8 +1,7 @@
 import {
-	AbsoluteFill, interpolate, Sequence, useCurrentFrame
+	Sequence
 } from 'remotion';
 import ArtistSequence from './ArtistSequence';
-import { FONT_FAMILY } from './Intro/constants';
 import { ArtistType } from './Video';
 
 const CharacterSequence: React.FC<{
@@ -12,17 +11,11 @@ const CharacterSequence: React.FC<{
   from: number;
   durationInFrames: number;
 }> = ({ name: characterName, species, artists, from, durationInFrames }) => {
-  const frame = useCurrentFrame();
-
   if (artists.length === 0) {
     return (null);
   }
 
-  const opacity = interpolate(
-    frame,
-    [artists[0].from - 20, artists[0].from],
-    [1, 0]
-  )
+  console.log(species)
 
   return (
     <Sequence
@@ -30,46 +23,13 @@ const CharacterSequence: React.FC<{
       from={from}
       durationInFrames={durationInFrames}
     >
-      <Sequence
-        name={`${characterName} intro`}
-        from={0}
-        durationInFrames={artists[0].from}
-      >
-        <AbsoluteFill
-          style={{
-            backgroundColor: 'black',
-            flexDirection: 'column',
-            justifyContent: 'center',
-          }}
-        >
-          <p
-            style={{
-              color: "white",
-              fontSize: 100,
-              marginLeft: "auto",
-              marginRight: "auto",
-              fontFamily: FONT_FAMILY,
-              textTransform: 'capitalize',
-              textAlign: 'center'
-            }}
-          >
-            {characterName}<br />
-            <span
-              style={{
-                fontSize: '0.5em'
-              }}
-            >
-              ({species})
-            </span>
-          </p>
-        </AbsoluteFill>
-      </Sequence>
       {
         artists.map(({ name, network, artworks, from, durationInFrames }) => (
           <ArtistSequence
             name={name}
             network={network}
             characterName={characterName}
+            species={species}
             from={from}
             durationInFrames={durationInFrames}
             artworks={artworks}

@@ -1,15 +1,16 @@
 import {
   AbsoluteFill,
-	Img, interpolate, Sequence, staticFile, useCurrentFrame,
+	Img, Sequence, staticFile,
 } from 'remotion';
 import { FONT_FAMILY } from './Intro/constants';
 import { ArtworkType } from './Video';
 
-const INFO_HEIGHT = 96;
+const INFO_HEIGHT = 130;
 
 const ArtistSequence: React.FC<{
 	name: string;
 	network: string;
+	species: string;
   characterName: string;
   artworks: ArtworkType[];
   from: number;
@@ -17,16 +18,12 @@ const ArtistSequence: React.FC<{
 }> = ({
   name: artistName,
   network,
+  species,
   characterName,
   artworks,
   from,
   durationInFrames
 }) => {
-  const frame = useCurrentFrame();
-  const infoBottom = interpolate(frame - from, [0, 10, 15], [-INFO_HEIGHT, -INFO_HEIGHT, 0], {
-    extrapolateRight: "clamp"
-  });
-
 	return (
     <Sequence
       name={artistName}
@@ -46,7 +43,7 @@ const ArtistSequence: React.FC<{
                 backgroundSize: 'cover',
                 backgroundPosition: 'center',
                 flexDirection: 'column',
-                justifyContent: 'center'
+                justifyContent: 'center',
               }}
             >
               <AbsoluteFill
@@ -58,40 +55,69 @@ const ArtistSequence: React.FC<{
                   src={staticFile(url)}
                   style={{
                     objectFit: 'cover',
-                    height: '100%',
+                    height: `calc(100% - ${INFO_HEIGHT}px)`,
                     marginLeft: 'auto',
                     marginRight: 'auto'
                   }}
                 />
+
+                <div
+                  style={{
+                    height: INFO_HEIGHT,
+                    backgroundColor: 'rgba(0, 0, 0, 0.9)',
+                    bottom: 0,
+                    right: 0,
+                    color: 'white',
+                    padding: "16px 80px",
+                    fontSize: '3em',
+                    borderTopLeftRadius: 0,
+                    fontFamily: FONT_FAMILY,
+                    width: '100%',
+                    display: 'flex',
+                    flexDirection: 'row',
+                    justifyContent: 'space-between'
+                  }}
+                >
+                  <div
+                    style={{
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <div>
+                      {characterName}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.5em"
+                      }}
+                    >
+                      ({species})
+                    </div>
+                  </div>
+                  <div
+                    style={{
+                      textAlign: 'right',
+                      flexDirection: 'column',
+                    }}
+                  >
+                    <div>
+                      Par {artistName}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.5em"
+                      }}
+                    >
+                      ({network})
+                    </div>
+                  </div>
+                </div>
+
               </AbsoluteFill>
             </AbsoluteFill>
           </Sequence>
         ))
       }
-      <div
-        style={{
-          position: "absolute",
-          height: INFO_HEIGHT,
-          backgroundColor: 'rgba(0, 0, 0, 0.9)',
-          bottom: infoBottom,
-          right: 0,
-          color: 'white',
-          textAlign: 'left',
-          padding: "20px 80px",
-          fontSize: '3em',
-          borderTopLeftRadius: 0,
-          fontFamily: FONT_FAMILY,
-          textTransform: 'capitalize',
-          width: '100%'
-        }}
-      >
-        {characterName} par {artistName}<br />
-        <span
-          style={{ fontSize: '1em', color: 'white', }}
-        >
-          {network}
-        </span>
-      </div>
     </Sequence>
 	);
 };
