@@ -108,7 +108,7 @@ const ArtistSequence: React.FC<{
                         fontSize: "0.5em"
                       }}
                     >
-                      ({network})
+                      {network}
                     </div>
                   </div>
                 </div>
