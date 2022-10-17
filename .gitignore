@@ -10,3 +10,4 @@ media.json
 public/media
 slideshow
 src/slideshow.json
+*.zip

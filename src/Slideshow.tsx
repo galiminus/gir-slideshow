@@ -1,11 +1,10 @@
-import {
-	AbsoluteFill, Series,
-} from 'remotion';
-
 import { SlideshowType } from './Video';
 
-import CharactersSequence from './CharactersSequence';
 import IntroSequence from './IntroSequence';
+import { Sequence } from 'remotion';
+import Artwork from './Artwork';
+
+const TRANSITION_DURATION = 20;
 
 export const Slideshow: React.FC<{
 	titleText: string;
@@ -23,10 +22,24 @@ export const Slideshow: React.FC<{
         titleColor={titleColor}
         durationInFrames={slideshow.introDurationInFrames}
       />
-      <CharactersSequence
-        characters={slideshow.characters}
+      <Sequence
+        name={"slideshow"}
         from={slideshow.introDurationInFrames}
-      />
+        durationInFrames={slideshow.durationInFrame}
+      >
+        {
+          slideshow.artworks.map((artwork, index) => (
+            <Sequence
+              key={index}
+              name={artwork.url}
+              from={artwork.from - TRANSITION_DURATION}
+              durationInFrames={artwork.durationInFrames + TRANSITION_DURATION * 2}
+            >
+              <Artwork {...artwork} transitionDuration={TRANSITION_DURATION} />
+            </Sequence>
+          ))
+        }
+      </Sequence>
     </>
 	);
 };

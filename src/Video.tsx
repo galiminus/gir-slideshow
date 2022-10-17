@@ -3,23 +3,11 @@ import { Composition } from 'remotion';
 import { Slideshow } from './Slideshow';
 
 export type ArtworkType = {
-	url: string;
-	durationInFrames: number;
-	from: number;
-}
-
-export type ArtistType = {
-	name: string;
-	network: string;
-	artworks: ArtworkType[];
-	durationInFrames: number;
-	from: number;
-}
-
-export type CharacterType = {
-	name: string;
+	characterName: string;
 	species: string;
-	artists: ArtistType[];
+	artistName: string;
+	network: string;
+	url: string;
 	durationInFrames: number;
 	from: number;
 }
@@ -28,7 +16,7 @@ export type SlideshowType = {
 	durationInFrame: number;
 	introDurationInFrames: number;
 	from: number;
-	characters: CharacterType[];
+	artworks: ArtworkType[];
 }
 
 import slideshow from './slideshow.json';

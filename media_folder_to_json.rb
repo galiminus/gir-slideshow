@@ -14,75 +14,44 @@ OUTPUT_DIR = "#{PUBLIC_DIR}/#{OUTPUT_SUBDIR}"
 
 FileUtils.mkdir_p OUTPUT_DIR
 
-video_duration_in_frames = 0
+duration_in_frames = 0
 
-characters = Dir["#{ARGV[0]}/**/*"].reduce({}) do |media, path|
-  if [".png", ".jpg", ".jpeg"].include?(File.extname(path).downcase)
-    character, artist_configuration = path.split(File::SEPARATOR)[-3..-2]
+artworks = Dir["#{ARGV[0]}/**/*"].shuffle.map do |path|
+  next unless [".png", ".jpg", ".jpeg"].include?(File.extname(path).downcase)
+  character_configuration, artist_configuration = path.split(File::SEPARATOR)[-3..-2]
 
-    media[character] ||= {}
-    media[character][artist_configuration] ||= []
-    media[character][artist_configuration] << path
-  end
+  _, character_name, character_species =
+    character_configuration.match(/([^(]+) *\(?([^\)]+)?\)?/).to_a
 
-  media
-end.map do |name, artists|
-  character_duration_in_frames = 0
+  _, artist_name, artist_network =
+    artist_configuration.match(/([^()]+) *\(?([^\)]+)?\)?/).to_a
 
-  _, character_name, character_species = name.match(/([^(]+) *\(?([^\)]+)?\)?/).to_a
+  hash = Digest::SHA1.hexdigest(character_configuration + artist_configuration + File.basename(path))
+  url = "#{OUTPUT_SUBDIR}/#{hash}#{File.extname(path)}"
+  FileUtils.cp path, "#{PUBLIC_DIR}/#{url}"
 
-  artists_configuration = artists.map do |artist_configuration, artworks|
-    _, artist_name, artist_network = artist_configuration.match(/([^()]+) *\(?([^\)]+)?\)?/).to_a
-
-    artist_duration_in_frame = 0
-
-    artworks_configuration = artworks.map do |artwork|
-      path = "#{OUTPUT_SUBDIR}/#{Digest::SHA1.hexdigest(artwork)}#{File.extname(artwork)}"
-      FileUtils.cp artwork, "#{PUBLIC_DIR}/#{path}"
-
-      artwork_configuration = {
-        url: path,
-        durationInFrames: ARTWORK_DURATION,
-        from: artist_duration_in_frame
-      }
-
-      artist_duration_in_frame += ARTWORK_DURATION
-
-      artwork_configuration
-    end
-
-    artist_configuration = {
-      name: artist_name.strip.capitalize,
-      durationInFrames: artist_duration_in_frame,
-      from: character_duration_in_frames,
-      network: artist_network&.strip&.gsub(/https?_--/, '')&.gsub('-', '/'),
-      artworks: artworks_configuration
-    }
-
-    character_duration_in_frames += artist_duration_in_frame
-
-    artist_configuration
-  end
-
-  character_configuration = {
-    name: character_name.strip.capitalize,
+  artwork = {
+    characterName: character_name.strip.capitalize,
     species: character_species&.strip,
-    from: video_duration_in_frames,
-    durationInFrames: character_duration_in_frames,
-    artists: artists_configuration
+    artistName: artist_name.strip.capitalize,
+    network: artist_network&.strip&.gsub(/https?_--/, '')&.gsub('-', '/'),
+    url: url,
+    durationInFrames: ARTWORK_DURATION,
+    from: duration_in_frames
   }
 
-  video_duration_in_frames += character_duration_in_frames
+  duration_in_frames += ARTWORK_DURATION
 
-  character_configuration
-end
+  artwork
+end.compact
+
 
 $stdout.write(
   JSON.pretty_generate({
-    characters: characters,
+    artworks: artworks,
     fps: FPS,
     from: 0,
-    durationInFrames: video_duration_in_frames + INTRO_DURATION,
+    durationInFrames: duration_in_frames,
     introDurationInFrames: INTRO_DURATION,
   })
 )
